@@ -10,19 +10,19 @@ def unique_images_function(directory):
     hashes = {}
     unique_images = []
     # Задаем порог для SSIM
-    ssim_threshold = 0.8
+    ssim_threshold = 0.80
 
     # Проходимся по каждому изображению
     for i in range(1, len(os.listdir(directory)) + 1):
         # Открываем изображение и вычисляем его хеш
-        with Image.open(f'icons/{i}.png') as img:
+        with Image.open(f'{directory}/{i}.png') as img:
             hash = hashlib.md5(img.tobytes()).hexdigest()
             if hash in hashes:
                 continue
             unique = True
             for j in range(1, i):
-                img1 = cv2.imread(f'icons/{i}.png')
-                img2 = cv2.imread(f'icons/{j}.png')
+                img1 = cv2.imread(f'{directory}/{i}.png')
+                img2 = cv2.imread(f'{directory}/{j}.png')
 
                 gray_img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
                 gray_img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
@@ -39,7 +39,7 @@ def unique_images_function(directory):
                     gray_img2 = cv2.resize(gray_img2, (min_w, min_h))
 
                 similarity_score = ssim(gray_img1, gray_img2)
-                print(similarity_score)
+
 
                 if similarity_score > ssim_threshold:
                     unique = False
@@ -48,8 +48,15 @@ def unique_images_function(directory):
                 hashes[hash] = i
                 unique_images.append(img)
 
-    for img in unique_images:
-        img.show()
+    folder_name = 'Уникальные значки'
+    if not os.path.exists(os.path.join(directory, folder_name)):
+        os.makedirs(os.path.join(directory, folder_name))
+        print("Папка", folder_name, "была успешно создана в директории", directory)
+    else:
+        print("Папка", folder_name, "уже существует в директории", directory)
+    for i, img in enumerate(unique_images):
+        img.save(f'{os.path.join(directory, folder_name)}/{i + 1}.png')
+        print(i)
 
 
 if __name__ == '__main__':

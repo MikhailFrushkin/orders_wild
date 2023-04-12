@@ -21,10 +21,9 @@ def split_image(filename, dirname):
         diameter_mm = diameter_px / scale_px_mm
 
         if 200 > diameter_mm > 100:
-            print(diameter_mm)
             icon = image[y:y + h, x:x + w]
 
-            cv2.imwrite(f"{icon_dir}/{count}.png", icon)
+            cv2.imwrite(f"{icon_dir}/Значки по отдельности/{count}.png", icon)
             count += 1
         elif 600 > diameter_mm > 200:
             print(f'большие значки {diameter_mm}')
@@ -35,14 +34,14 @@ def split_image(filename, dirname):
                 icon1 = image[y:y + h, x:x + w // 3]
                 icon2 = image[y:y + h, x + w // 3:x + w // 3 * 2]
                 icon3 = image[y:y + h, x + w // 3 * 2:x + w]
-                cv2.imwrite(f"{icon_dir}/{count}.png", icon1)
+                cv2.imwrite(f"{icon_dir}/Значки по отдельности/{count}.png", icon1)
                 count += 1
-                cv2.imwrite(f"{icon_dir}/{count}.png", icon2)
+                cv2.imwrite(f"{icon_dir}/Значки по отдельности/{count}.png", icon2)
                 count += 1
-                cv2.imwrite(f"{icon_dir}/{count}.png", icon3)
+                cv2.imwrite(f"{icon_dir}/Значки по отдельности/{count}.png", icon3)
                 count += 1
 
 
 if __name__ == '__main__':
-    split_image('KAPIBARANABOR-9NEW-6-56.jpg', 'icons')
+    split_image('KAPIBARANABOR-9NEW-6-56.jpg', 'Значки по отдельности')
     # split_image('IMPROVIZATSIYANABOR-10NEW-20-37.png')
