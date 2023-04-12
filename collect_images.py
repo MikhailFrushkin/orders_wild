@@ -10,7 +10,7 @@ A4_HEIGHT = 3508
 # Создаем пустой лист A4
 
 # Определяем размеры изображений-значков и их количество
-ICON_SIZE = int((50 / 25.4) * 300)
+ICON_SIZE = int((37 / 25.4) * 420)
 ICONS_PER_ROW = 4
 ICONS_PER_COL = 5
 
@@ -20,14 +20,13 @@ def add_images(num):
     files = glob.glob(path_images + '/*.png')
     print(files)
     print(f'Количество значков в папке: {len(files)}')
-    print(f'Количество значков общее: {len(files)*num}')
+    print(f'Количество значков  в общем на {num} заказов: {len(files)*num}')
     all_images = len(files)*num
     num_page = len(files)*num // 20
     if len(files)*num % 20 > 0:
         num_page += 1
     print(f'Количество листов: {num_page}')
     for page in range(num_page):
-        print(all_images)
         result_image = Image.new('RGB', (A4_WIDTH, A4_HEIGHT), (255, 255, 255))
 
         for i in range(0, ICONS_PER_ROW * ICONS_PER_COL, len(files)):
@@ -36,7 +35,6 @@ def add_images(num):
                 break
             try:
                 for file in files:
-                    print(all_images)
                     if all_images == 0:
                         break
                     icon_image = Image.open(file).convert('RGBA')
@@ -61,4 +59,4 @@ def add_images(num):
 
 
 if __name__ == '__main__':
-    add_images(16)
+    add_images(7)
