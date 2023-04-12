@@ -1,36 +1,64 @@
+import glob
+
 from PIL import Image
+from data.config import path
 
 # Определяем размеры листа A4 в пикселях
 A4_WIDTH = 2480
 A4_HEIGHT = 3508
 
 # Создаем пустой лист A4
-result_image = Image.new('RGB', (A4_WIDTH, A4_HEIGHT), (255, 255, 255))
 
 # Определяем размеры изображений-значков и их количество
-ICON_SIZE = int((37 / 25.4) * 360)
+ICON_SIZE = int((50 / 25.4) * 300)
 ICONS_PER_ROW = 4
 ICONS_PER_COL = 5
 
-# Загружаем изображения и обрезаем белый фон
-for i in range(ICONS_PER_ROW * ICONS_PER_COL):
-    icon_image = Image.open(
-        f'/home/mikhail/PycharmProjects/generate_pdf/files/'
-        f'IMPROVIZATSIYANABOR-10NEW-20-37/Значки по отдельности/Уникальные значки/{i + 1}.png').convert(
-        'RGBA')
-    background = Image.new('RGBA', icon_image.size, (255, 255, 255, 255))
-    alpha_composite = Image.alpha_composite(background, icon_image)
-    icon_image = alpha_composite.crop(alpha_composite.getbbox())
-    icon_image = icon_image.resize((ICON_SIZE, ICON_SIZE))
 
-    # Вычисляем координаты для размещения изображения на листе A4
-    row = i // ICONS_PER_ROW
-    col = i % ICONS_PER_ROW
-    x = col * ICON_SIZE + (A4_WIDTH - ICON_SIZE * ICONS_PER_ROW) // 2
-    y = row * ICON_SIZE + (A4_HEIGHT - ICON_SIZE * ICONS_PER_COL) // 2
+def add_images(num):
+    path_images = f'{path}/files/CHEBURASHKA-7NEW-4-37/Значки по отдельности/Уникальные значки/'
+    files = glob.glob(path_images + '/*.png')
+    print(files)
+    print(f'Количество значков в папке: {len(files)}')
+    print(f'Количество значков общее: {len(files)*num}')
+    all_images = len(files)*num
+    num_page = len(files)*num // 20
+    if len(files)*num % 20 > 0:
+        num_page += 1
+    print(f'Количество листов: {num_page}')
+    for page in range(num_page):
+        print(all_images)
+        result_image = Image.new('RGB', (A4_WIDTH, A4_HEIGHT), (255, 255, 255))
 
-    # Размещаем изображение на листе A4
-    result_image.paste(icon_image, (x, y))
+        for i in range(0, ICONS_PER_ROW * ICONS_PER_COL, len(files)):
 
-# Сохраняем результат
-result_image.save('result.png')
+            if i > 20 or all_images == 0:
+                break
+            try:
+                for file in files:
+                    print(all_images)
+                    if all_images == 0:
+                        break
+                    icon_image = Image.open(file).convert('RGBA')
+                    background = Image.new('RGBA', icon_image.size, (255, 255, 255, 255))
+                    alpha_composite = Image.alpha_composite(background, icon_image)
+                    icon_image = alpha_composite.crop(alpha_composite.getbbox())
+                    icon_image = icon_image.resize((ICON_SIZE, ICON_SIZE))
+                    # Вычисляем координаты для размещения изображения на листе A4
+                    row = i // ICONS_PER_ROW
+                    col = i % ICONS_PER_ROW
+                    x = col * ICON_SIZE + (A4_WIDTH - ICON_SIZE * ICONS_PER_ROW) // 2
+                    y = row * ICON_SIZE + (A4_HEIGHT - ICON_SIZE * ICONS_PER_COL) // 2
+
+                    # Размещаем изображение на листе A4
+                    result_image.paste(icon_image, (x, y))
+                    i += 1
+                    all_images -= 1
+            except Exception as ex:
+                print(ex)
+        result_image.save(f'result{page}.png')
+
+
+
+if __name__ == '__main__':
+    add_images(16)

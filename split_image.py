@@ -1,7 +1,6 @@
 import os
-import hashlib
+
 import cv2
-import numpy as np
 
 
 def split_image(filename, dirname):
