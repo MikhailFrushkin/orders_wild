@@ -2,6 +2,7 @@ import os
 
 import pandas as pd
 
+from data.config import path
 from read_excel import read_excel_file
 import glob
 
@@ -10,7 +11,6 @@ from unique_images import unique_images_function
 
 
 def search_folder(name):
-    path = '/home/mikhail/PycharmProjects/generate_pdf/'
     '''поиск папки по названию артикула'''
     for root, dirs, files in os.walk(path):
         if name in dirs:
@@ -21,7 +21,7 @@ def search_folder(name):
 def df_to_dict():
     """Ищем папки по артикулам и добавляем их путь в словарь"""
     dict_orders = {}
-    df_orders = pd.read_excel('/home/mikhail/PycharmProjects/generate_pdf/Сгрупированный заказ.xlsx')
+    df_orders = pd.read_excel(f'{path}/Сгрупированный заказ.xlsx')
     df = df_orders.set_index('Артикул продавца')
     dict_from_df = df['Quantity'].to_dict()
     for key, value in dict_from_df.items():
@@ -39,7 +39,7 @@ def df_to_dict():
 
 def main():
     try:
-        read_excel_file('/home/mikhail/PycharmProjects/generate_pdf/Заказы.xlsx')
+        read_excel_file(f'{path}/Заказы.xlsx')
     except Exception as ex:
         print(f'ошибка чтения файла с заказами {ex}')
     dict_orders = df_to_dict()
