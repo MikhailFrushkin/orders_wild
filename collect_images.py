@@ -59,4 +59,4 @@ def add_images(num):
 
 
 if __name__ == '__main__':
-    add_images(7)
+    add_images()

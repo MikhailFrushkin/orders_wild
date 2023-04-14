@@ -2,8 +2,10 @@ import os
 
 import cv2
 
+from data.config import path
 
-def split_image(filename, dirname):
+
+def split_image(filename, dirname, dict_orders):
     icon_dir = dirname
     image = cv2.imread(filename)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -18,13 +20,14 @@ def split_image(filename, dirname):
         diameter_px = max(w, h)
 
         diameter_mm = diameter_px / scale_px_mm
-
-        if 200 > diameter_mm > 100:
+        if 150 > diameter_mm > 100:
+            print(diameter_mm)
+            size = 37
             icon = image[y:y + h, x:x + w]
-
             cv2.imwrite(f"{icon_dir}/Значки по отдельности/{count}.png", icon)
             count += 1
         elif 600 > diameter_mm > 200:
+            size = 56
             print(f'большие значки {diameter_mm}')
             if w > h:  # vertical rectangle
                 # split image into 3 equal parts vertically
@@ -39,8 +42,17 @@ def split_image(filename, dirname):
                 count += 1
                 cv2.imwrite(f"{icon_dir}/Значки по отдельности/{count}.png", icon3)
                 count += 1
+    try:
+        name = os.path.splitext(filename)[0].split('/')[-1]
+        dict_orders[name]['size'] = size
+    except Exception as ex:
+        print(ex)
+    print(dict_orders)
 
 
 if __name__ == '__main__':
-    split_image('KAPIBARANABOR-9NEW-6-56.jpg', 'Значки по отдельности')
+    dict_temp = {}
+    split_image(f'{path}/files/KAPIBARANABOR-9NEW-6-56/KAPIBARANABOR-9NEW-6-56.jpg', 'Значки по отдельности', dict_temp)
+    split_image(f'{path}/files/IMPROVIZATSIYANABOR-10NEW-20-37/IMPROVIZATSIYANABOR-10NEW-20-37.png',
+                'Значки по отдельности', dict_temp)
     # split_image('IMPROVIZATSIYANABOR-10NEW-20-37.png')

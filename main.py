@@ -31,7 +31,7 @@ def df_to_dict():
             if len(files) > 1:
                 print('найшлось больше 1 файла со значками')
             name_image = files[0]
-            dict_orders[key] = {'name_directory': name_dir, 'name_image': name_image, 'quantity': value}
+            dict_orders[key] = {'name_directory': name_dir, 'name_image': name_image, 'quantity': value, 'size': None}
         else:
             print(f'Не удалось найти папку для артикула: {key}')
     return dict_orders
@@ -52,7 +52,7 @@ def main():
         if not os.path.exists(os.path.join(directory, folder_name)):
             os.makedirs(os.path.join(directory, folder_name))
             print("Папка", folder_name, "была успешно создана в директории", directory)
-            split_image(name_image, directory)
+            split_image(name_image, directory, dict_orders)
             unique_images_function(os.path.join(directory, folder_name))
         else:
             print("Папка", folder_name, "уже существует в директории", directory)
