@@ -31,7 +31,8 @@ def df_to_dict():
             if len(files) > 1:
                 print('найшлось больше 1 файла со значками')
             name_image = files[0]
-            dict_orders[key] = {'name_directory': name_dir, 'name_image': name_image, 'quantity': value, 'size': None}
+            dict_orders[key] = {'name_directory': name_dir, 'name_image': name_image, 'quantity': value, 'size': None,
+                                'size_set': 0}
         else:
             print(f'Не удалось найти папку для артикула: {key}')
     return dict_orders

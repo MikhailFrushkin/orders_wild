@@ -60,4 +60,4 @@ def unique_images_function(directory):
 
 
 if __name__ == '__main__':
-    unique_images_function('/home/mikhail/PycharmProjects/generate_pdf/icons/')
+    unique_images_function('/home/mikhail/PycharmProjects/generate_pdf/files/IMPROVIZATSIYANABOR-10NEW-20-37/Значки по отдельности')
