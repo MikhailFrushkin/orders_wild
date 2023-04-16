@@ -10,12 +10,19 @@ A4_HEIGHT = 3508
 # Создаем пустой лист A4
 
 # Определяем размеры изображений-значков и их количество
-ICON_SIZE = int((37 / 25.4) * 420)
-ICONS_PER_ROW = 4
-ICONS_PER_COL = 5
+
 
 
 def add_images(num):
+    dict_sizes_images = {
+        25: 35,
+        37: 48,
+        44: 53,
+        56: 66
+    }
+    ICON_SIZE = int((48 / 25.4) * 300)
+    ICONS_PER_ROW = 4
+    ICONS_PER_COL = 5
     path_images = f'{path}/files/CHEBURASHKA-7NEW-4-37/Значки по отдельности/Уникальные значки/'
     files = glob.glob(path_images + '/*.png')
     print(files)
@@ -59,4 +66,4 @@ def add_images(num):
 
 
 if __name__ == '__main__':
-    add_images()
+    add_images(7)
