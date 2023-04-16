@@ -14,11 +14,12 @@ def split_image(filename, dirname, dict_orders):
     scale_px_mm = 5  # 10 пикселей на 1 мм
     os.makedirs(icon_dir, exist_ok=True)
     count = 1
+    size = None
+
     for i in range(len(contours)):
         x, y, w, h = cv2.boundingRect(contours[i])
 
         diameter_px = max(w, h)
-
         diameter_mm = diameter_px / scale_px_mm
         if 150 > diameter_mm > 100:
             print(diameter_mm)
@@ -43,7 +44,9 @@ def split_image(filename, dirname, dict_orders):
                 cv2.imwrite(f"{icon_dir}/Значки по отдельности/{count}.png", icon3)
                 count += 1
     try:
-        name = os.path.splitext(filename)[0].split('/')[-1]
+        name = os.path.splitext(os.path.basename(filename))[0]
+        print(name)
+        print(size)
         dict_orders[name]['size'] = size
     except Exception as ex:
         print(ex)
